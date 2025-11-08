@@ -65,10 +65,10 @@ CREATE TABLE `libros` (
 
 INSERT INTO `libros` (`id_libro`, `id_autor`, `titulo`, `genero`, `paginas`) VALUES
 (1, 1, 'El Alquimista', 'Aventura', 100),
-(2, 3, 'Crimen y castigo', 'Clásico', 500),
+(2, 3, 'Crimen y castigo', 'Clasico', 500),
 (3, 3, 'Sherlock Holmes', 'Crimen', 800),
 (4, 3, 'Hamlet', 'Teatro', 1000),
-(5, 4, 'El principito', 'Clásico', 2000),
+(5, 4, 'El principito', 'Clasico', 2000),
 (6, 1, 'Martín Fierro', 'Poesia', 500),
 (7, 2, 'La vuelta al mundo en 80 días', 'Aventura', 4000);
 

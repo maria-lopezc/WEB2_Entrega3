@@ -12,7 +12,16 @@ class BibliotecaApiController{
     }
 
     public function getAll($req, $res) {
-        $libros = $this->model->getLibros();
+        $orderBy = false;
+        $forma = false;
+        if(isset($req->query->orderBy)){
+            $orderBy = $req->query->orderBy;
+            if(isset($req->query->forma)){
+                $forma = strtoupper($req->query->forma);
+            }
+        }
+            
+        $libros = $this->model->getLibros($orderBy,$forma);
         if($libros == null || count($libros) == 0){
             return $this->view->response("No hay libros",204);
         }

@@ -7,8 +7,39 @@ class BibliotecaModel{
        $this->db = new PDO("mysql:host=".MYSQL_HOST .";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS);
     }
 
-    public function getLibros() {
-        $query = $this->db->prepare('SELECT * FROM `libros`');
+    public function getLibros($orderBy=false,$forma=false) {
+        $sql='SELECT * FROM `libros`';
+        if($orderBy){
+            switch($orderBy) {
+                case 'paginas':
+                    $sql .= ' ORDER BY paginas';
+                    break;
+                case 'autor':
+                    $sql .= ' ORDER BY id_autor';
+                    break;
+                case 'titulo':
+                    $sql .= ' ORDER BY titulo';
+                    break;
+                case 'genero':
+                    $sql .= ' ORDER BY genero';
+                    break;
+            }
+            if($forma){
+                switch($forma) {
+                    case 'ASC':
+                        $sql .= ' ASC';
+                        break;
+                    case 'DESC':
+                        $sql .= ' DESC';
+                        break;
+                    default:
+                        $sql .= ' ASC';
+                        break;
+                }
+            }
+        }
+       
+        $query = $this->db->prepare($sql);
         $query->execute();
         $libros = $query->fetchAll(PDO::FETCH_OBJ); 
         return $libros;
