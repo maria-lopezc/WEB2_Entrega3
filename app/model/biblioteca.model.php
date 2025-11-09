@@ -8,40 +8,52 @@ class BibliotecaModel{
     }
 
     public function getLibros($orderBy=false,$forma=false) {
-        $sql='SELECT * FROM `libros`';
-        if($orderBy){
-            switch($orderBy) {
-                case 'paginas':
-                    $sql .= ' ORDER BY paginas';
-                    break;
-                case 'autor':
-                    $sql .= ' ORDER BY id_autor';
-                    break;
-                case 'titulo':
-                    $sql .= ' ORDER BY titulo';
-                    break;
-                case 'genero':
-                    $sql .= ' ORDER BY genero';
-                    break;
-            }
-            if($forma){
-                switch($forma) {
-                    case 'ASC':
-                        $sql .= ' ASC';
+        try {
+            $sql='SELECT * FROM `libros`';
+            if($orderBy){
+                switch($orderBy) {
+                    case 'paginas':
+                        $sql .= ' ORDER BY paginas';
                         break;
-                    case 'DESC':
-                        $sql .= ' DESC';
+                    case 'autor':
+                        $sql .= ' ORDER BY id_autor';
                         break;
-                    default:
-                        $sql .= ' ASC';
+                    case 'titulo':
+                        $sql .= ' ORDER BY titulo';
+                        break;
+                    case 'genero':
+                        $sql .= ' ORDER BY genero';
                         break;
                 }
+                if($forma){
+                    switch($forma) {
+                        case 'ASC':
+                            $sql .= ' ASC';
+                            break;
+                        case 'DESC':
+                            $sql .= ' DESC';
+                            break;
+                        default:
+                            $sql .= ' ASC';
+                            break;
+                    }
+                }
+            }
+        
+            $query = $this->db->prepare($sql);
+            $query->execute();
+            $libros = $query->fetchAll(PDO::FETCH_OBJ); 
+            return $libros;
+        } catch (PDOException $e) {
+            $codigo=$e->getCode();
+            switch ($codigo) {
+                case '42S02':
+                    return 'error tabla';
+                case '42000':
+                    return 'error sintaxis';
+                default:
+                    return 'otro error';
             }
         }
-       
-        $query = $this->db->prepare($sql);
-        $query->execute();
-        $libros = $query->fetchAll(PDO::FETCH_OBJ); 
-        return $libros;
     }
 }
