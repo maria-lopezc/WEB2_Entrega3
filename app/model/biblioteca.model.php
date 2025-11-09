@@ -2,12 +2,27 @@
 require 'config/config.php';
 class BibliotecaModel{
     private $db;
+    private $dbError;
 
     public function __construct() {
-       $this->db = new PDO("mysql:host=".MYSQL_HOST .";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS);
+        try {
+            $this->db = new PDO("mysql:host=".MYSQL_HOST .";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS);
+        } catch (PDOException $e) {
+            $codigo=$e->getCode();
+            if ($codigo == 1049) {
+                $this->dbError = 'error base';
+            }else{
+                $this->dbError = 'otro error';
+            }
+            $this->db=null;
+        }
+        
     }
 
     public function getLibros($orderBy=false,$forma=false) {
+        if ($this->dbError) {
+                return $this->dbError; 
+            }
         try {
             $sql='SELECT * FROM `libros`';
             if($orderBy){

@@ -7,8 +7,8 @@ class BibliotecaApiController{
     private $view;
 
     public function __construct() {
-        $this->model = new BibliotecaModel();
         $this->view = new JSONView();
+        $this->model = new BibliotecaModel();
     }
 
     public function getAll($req, $res) {
@@ -22,8 +22,14 @@ class BibliotecaApiController{
         }
             
         $libros = $this->model->getLibros($orderBy,$forma);
-        if($libros == 'otro error'||$libros == 'error sintaxis'){
+        if($libros == 'error base'){
+            return $this->view->response(["error" => "No existe la base de datos"],500);
+        }
+        if($libros == 'otro error'){
             return $this->view->response(["error" => "Error del servidor"],500);
+        }
+        if($libros == 'error sintaxis'){
+            return $this->view->response(["error" => "Mala request"],400);
         }
         if($libros == 'error tabla'){
             return $this->view->response(["error" => "No existe la tabla"],404);
