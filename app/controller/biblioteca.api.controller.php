@@ -39,4 +39,41 @@ class BibliotecaApiController{
         }
         return $this->view->response($libros);
     }
+
+    public function edit($req, $res){
+        $id = $req->params->id;
+
+        $libro = $this->model->getLibro($id);
+        if (!$libro) {
+            return $this->view->response(["error" => "El libro con el id=$id no existe"], 404);
+        }
+        if (empty($req->body->id_autor)){
+            return $this->view->response(["error" => "Faltan completar id_autor"], 400);
+        }
+        if (empty($req->body->titulo)){
+            return $this->view->response(["error" => "Faltan completar titulo"], 400);
+        }
+        if (empty($req->body->genero)){
+            return $this->view->response(["error" => "Faltan completar genero"], 400);
+        }
+        if (empty($req->body->paginas)){
+            return $this->view->response(["error" => "Faltan completar paginas"], 400);
+        }
+    
+        $id_autor = $req->body->id_autor; 
+        $titulo = $req->body->titulo;       
+        $genero = $req->body->genero;
+        $paginas = $req->body->paginas;
+
+        $libro=$this->model->updateLibro($id, $id_autor, $titulo, $genero, $paginas);
+
+        if($libro == 'error key'){
+            return $this->view->response(["error" => "No existe el autor"], 400);
+        }else if($libro == 'otro error'){
+            return $this->view->response(["error" => "Error del servidor"],500);
+        }
+        
+        $libro = $this->model->getLibro($id);
+        $this->view->response($libro, 200);
+    }
 }

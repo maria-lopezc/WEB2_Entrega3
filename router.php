@@ -9,4 +9,7 @@ $router = new Router();
 //Ascendiente o Descendiente: &forma=asc||desc
 $router->addRoute('libros','GET','BibliotecaApiController','getAll');
 
+
+$router->addRoute('libros/:id','PUT','BibliotecaApiController','edit');
+
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
