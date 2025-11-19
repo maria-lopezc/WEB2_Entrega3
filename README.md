@@ -13,6 +13,11 @@ Tercer entrega del TPE de WEB 2
         - Ascendiente o Descendiente: &forma=asc||desc
         - Para poder ordenar de forma ascendiente o descendiente se debe tener orderBy,
             de lo contrario se ordenará ascendientemente por default.
+    - Paginado:
+        - Cantidad de items por página: ?items=int (&items=int si se usa luego de orderBy)
+            - int: Cantidad de items por página
+        - Página actual: &pagina=int
+        - Para poder paginar debe indicar cantidad de items.
 ### PUT
 1. (nombre del proyecto)/api/libros/:id 
     - Escriba en el body del request todos los campos con los valores a editar. 

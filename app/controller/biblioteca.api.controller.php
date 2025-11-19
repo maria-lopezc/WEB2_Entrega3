@@ -12,12 +12,22 @@ class BibliotecaApiController{
     }
 
     public function getAll($req, $res) {
+        $librosPaginados=array();
         $orderBy = false;
         $forma = false;
         if(isset($req->query->orderBy)){
             $orderBy = $req->query->orderBy;
             if(isset($req->query->forma)){
                 $forma = strtoupper($req->query->forma);
+            }
+        }
+
+        $items = false;
+        $pagina = 1;
+        if(isset($req->query->items)){
+            $items = $req->query->items;
+            if(isset($req->query->pagina)){
+                $pagina = strtoupper($req->query->pagina);
             }
         }
             
@@ -37,6 +47,23 @@ class BibliotecaApiController{
         if($libros == null || count($libros) == 0){
             return $this->view->response(["mensaje" => "No hay datos para mostrar"],200);
         }
+
+        if($items){
+            $i=1;
+            $cantPaginas=ceil(sizeof($libros)/$items);
+            $limInf=(($pagina-1)*$items);
+            $limSup=$pagina*$items;
+            if($pagina<=$cantPaginas){
+                foreach($libros as $libro){
+                    if($i<=$limSup&&$i>$limInf){
+                        array_push($librosPaginados,$libro);
+                    }
+                    $i+=1;
+                }
+            }
+            return $this->view->response($librosPaginados);
+        }
+         
         return $this->view->response($libros);
     }
 
