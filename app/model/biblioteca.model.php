@@ -62,19 +62,16 @@ class BibliotecaModel{
                 }
                 if($forma){
                     switch($forma) {
-                        case 'ASC':
-                            $sql .= ' ASC';
-                            break;
                         case 'DESC':
                             $sql .= ' DESC';
                             break;
                         default:
-                            $sql .= ' '.$forma;
+                            $sql .= ' ASC';
                             break;
                     }
                 }
             }
-        
+           
             $query = $this->db->prepare($sql);
             $query->execute();
             $libros = $query->fetchAll(PDO::FETCH_OBJ); 

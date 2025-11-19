@@ -51,17 +51,22 @@ class BibliotecaApiController{
         if($items){
             $i=1;
             $cantPaginas=ceil(sizeof($libros)/$items);
-            $limInf=(($pagina-1)*$items);
-            $limSup=$pagina*$items;
             if($pagina<=$cantPaginas){
-                foreach($libros as $libro){
-                    if($i<=$limSup&&$i>$limInf){
-                        array_push($librosPaginados,$libro);
+                $limInf=(($pagina-1)*$items);
+                $limSup=$pagina*$items;
+                if($pagina<=$cantPaginas){
+                    foreach($libros as $libro){
+                        if($i<=$limSup&&$i>$limInf){
+                            array_push($librosPaginados,$libro);
+                        }
+                        $i+=1;
                     }
-                    $i+=1;
                 }
+                return $this->view->response($librosPaginados);
+            } else {
+                return $this->view->response(["error" => "No existe la página"],404);
             }
-            return $this->view->response($librosPaginados);
+            
         }
          
         return $this->view->response($libros);
@@ -74,7 +79,6 @@ class BibliotecaApiController{
         if (!$libro) {
             return $this->view->response(["error" => "El libro con el id=$id no existe"], 404);
         }
-        //var_dump($req->body->id_autor);
         if (empty($req->body->id_autor)){
             return $this->view->response(["error" => "Faltan completar id_autor"], 400);
         }

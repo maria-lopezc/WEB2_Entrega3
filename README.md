@@ -9,7 +9,7 @@ Tercer entrega del TPE de WEB 2
 ### GET
 1. (nombre del proyecto)/api/libros 
     - Para ordenar: 
-        - Por parámetro: ?orderBy=(parámetro) parámetro=id||id_autor||titulo||genero||paginas
+        - Por parámetro: ?orderBy=(parámetro) parámetro=id||autor||titulo||genero||paginas
         - Ascendiente o Descendiente: &forma=asc||desc
         - Para poder ordenar de forma ascendiente o descendiente se debe tener orderBy,
             de lo contrario se ordenará ascendientemente por default.
