@@ -1,12 +1,13 @@
 <?php
 require 'config/config.php';
 class BibliotecaModel{
-    private $db;
+    protected $db;
     private $dbError;
 
     public function __construct() {
         try {
             $this->db = new PDO("mysql:host=".MYSQL_HOST .";dbname=".MYSQL_DB.";charset=utf8", MYSQL_USER, MYSQL_PASS);
+            $this->_deploy();
         } catch (PDOException $e) {
             $codigo=$e->getCode();
             if ($codigo == 1049) {
@@ -14,9 +15,25 @@ class BibliotecaModel{
             }else{
                 $this->dbError = 'otro error';
             }
-            $this->db=null;
         }
         
+    }
+
+    private function _deploy() {
+        $query = $this->db->query('SHOW TABLES');
+        $tables = $query->fetchAll();
+        if(count($tables) == 0) {
+            $sql = <<<END
+            CREATE TABLE `autores` (`id_autor` int(11)   AUTO_INCREMENT PRIMARY KEY,`nombre` varchar(100) NOT NULL,`nacimiento` date NOT NULL,`email` varchar(50) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+            INSERT INTO `autores` (`id_autor`, `nombre`, `nacimiento`, `email`) VALUES(1, 'Luciano Añon', '2004-08-03', 'luciano@gmail.com'),(2, 'Julio Verne', '2000-01-01', 'julioverne32@gmail.com'),(3, 'Jose Perez', '1995-06-21', 'joseperez@gmail.com'),(4, 'Juana Rodriguez', '1999-03-08', 'juanarodriguez@gmail.com');
+            CREATE TABLE `libros` (`id_libro` int(11)  AUTO_INCREMENT PRIMARY KEY,`id_autor` int(11) NOT NULL,`titulo` varchar(100) NOT NULL,`genero` varchar(100) NOT NULL,`paginas` int(11) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+            INSERT INTO `libros` (`id_libro`, `id_autor`, `titulo`, `genero`, `paginas`) VALUES(1, 1, 'El Alquimista', 'Aventura', 100),(2, 3, 'Crimen y castigo', 'Clásico', 500),(3, 3, 'Sherlock Holmes', 'Crimen', 800),(4, 3, 'Hamlet', 'Teatro', 1000),(5, 4, 'El principito', 'Clásico', 2000),(6, 1, 'Martín Fierro', 'Poesia', 500),(7, 2, 'La vuelta al mundo en 80 días', 'Aventura', 4000);
+            CREATE TABLE `login` (`id` int(11)  AUTO_INCREMENT PRIMARY KEY,`usuario` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish_ci NOT NULL,`contrasena` varchar(200) CHARACTER SET utf16 COLLATE utf16_spanish2_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+            INSERT INTO `login` (`id`, `usuario`, `contrasena`) VALUES(1, 'webadmin', '\$2y\$10\$ax3bLQBWYdfetJxumbdezuE/Q0OmSwYwSYeNRPsMYuy.svLI8NjZe');
+            ALTER TABLE `libros` ADD CONSTRAINT `autor` FOREIGN KEY (`id_autor`) REFERENCES `autores`(`id_autor`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+            END;
+        $this->db->query($sql);
+        }
     }
 
     public function getLibros($orderBy=false,$forma=false) {
@@ -27,6 +44,9 @@ class BibliotecaModel{
             $sql='SELECT * FROM `libros`';
             if($orderBy){
                 switch($orderBy) {
+                    case 'id':
+                        $sql .= ' ORDER BY id_libro';
+                        break;
                     case 'paginas':
                         $sql .= ' ORDER BY paginas';
                         break;
@@ -49,7 +69,7 @@ class BibliotecaModel{
                             $sql .= ' DESC';
                             break;
                         default:
-                            $sql .= ' ASC';
+                            $sql .= ' '.$forma;
                             break;
                     }
                 }

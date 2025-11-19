@@ -4,12 +4,7 @@ require_once 'app/controller/biblioteca.api.controller.php';
 
 $router = new Router();
 
-//http://localhost/tpe3/libros 
-//Para ordenar: ?orderBy=(parámetro) parámetro=id_autor||titulo||genero||paginas
-//Ascendiente o Descendiente: &forma=asc||desc
-$router->addRoute('libros','GET','BibliotecaApiController','getAll');
-
-
-$router->addRoute('libros/:id','PUT','BibliotecaApiController','edit');
+$router->addRoute('api/libros','GET','BibliotecaApiController','getAll');
+$router->addRoute('api/libros/:id','PUT','BibliotecaApiController','edit');
 
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);

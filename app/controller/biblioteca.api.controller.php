@@ -47,8 +47,14 @@ class BibliotecaApiController{
         if (!$libro) {
             return $this->view->response(["error" => "El libro con el id=$id no existe"], 404);
         }
+        //var_dump($req->body->id_autor);
         if (empty($req->body->id_autor)){
             return $this->view->response(["error" => "Faltan completar id_autor"], 400);
+        }
+        $id_autor = $req->body->id_autor; 
+        $autor= $this->model->getAutor($id_autor);
+        if (!$autor) {
+            return $this->view->response(["error" => "El autor con el id=$id_autor no existe"], 404);
         }
         if (empty($req->body->titulo)){
             return $this->view->response(["error" => "Faltan completar titulo"], 400);
@@ -60,7 +66,7 @@ class BibliotecaApiController{
             return $this->view->response(["error" => "Faltan completar paginas"], 400);
         }
     
-        $id_autor = $req->body->id_autor; 
+       
         $titulo = $req->body->titulo;       
         $genero = $req->body->genero;
         $paginas = $req->body->paginas;
