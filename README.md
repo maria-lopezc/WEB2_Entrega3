@@ -9,6 +9,7 @@ Tercer entrega del TPE de WEB 2
 ### GET
 1. (nombre del proyecto)/api/libros 
     - Para ordenar: 
+    - Ejemplo: poner ejemplo
         - Por parámetro: ?orderBy=(parámetro) parámetro=id||autor||titulo||genero||paginas
         - Ascendiente o Descendiente: &forma=asc||desc
         - Para poder ordenar de forma ascendiente o descendiente se debe tener orderBy,
@@ -23,3 +24,4 @@ Tercer entrega del TPE de WEB 2
     - Escriba en el body del request todos los campos con los valores a editar. 
     - De faltar un campo tendrá un error.
     - De no existir el libro que se quiere editar o el autor al que se quiere asignar el libro tendrá un error.
+    - JSON ejemplo pner ejemplo

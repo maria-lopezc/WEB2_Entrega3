@@ -43,7 +43,7 @@ class BibliotecaModel{
         try {
             $sql='SELECT * FROM `libros`';
             if($orderBy){
-                switch($orderBy) {
+                switch($orderBy) {//hacer un default
                     case 'id':
                         $sql .= ' ORDER BY id_libro';
                         break;
@@ -60,15 +60,18 @@ class BibliotecaModel{
                         $sql .= ' ORDER BY genero';
                         break;
                 }
-                if($forma){
-                    switch($forma) {
-                        case 'DESC':
-                            $sql .= ' DESC';
-                            break;
-                        default:
-                            $sql .= ' ASC';
-                            break;
-                    }
+                
+            } else {
+                $sql .= ' ORDER BY id_libro';
+            }
+            if($forma){
+                switch($forma) {
+                    case 'DESC':
+                        $sql .= ' DESC';
+                        break;
+                    default:
+                        $sql .= ' ASC';
+                        break;
                 }
             }
            

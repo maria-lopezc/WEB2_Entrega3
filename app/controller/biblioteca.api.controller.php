@@ -48,7 +48,7 @@ class BibliotecaApiController{
             return $this->view->response(["mensaje" => "No hay datos para mostrar"],200);
         }
 
-        if($items){
+        if($items){ //offset buscar
             $i=1;
             $cantPaginas=ceil(sizeof($libros)/$items);
             if($pagina<=$cantPaginas){
