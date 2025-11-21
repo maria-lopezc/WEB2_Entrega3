@@ -43,7 +43,7 @@ class BibliotecaModel{
         try {
             $sql='SELECT * FROM `libros`';
             if($orderBy){
-                switch($orderBy) {//hacer un default
+                switch($orderBy) {
                     case 'id':
                         $sql .= ' ORDER BY id_libro';
                         break;
@@ -60,7 +60,6 @@ class BibliotecaModel{
                         $sql .= ' ORDER BY genero';
                         break;
                 }
-                
             } else {
                 $sql .= ' ORDER BY id_libro';
             }

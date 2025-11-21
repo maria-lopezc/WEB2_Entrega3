@@ -17,9 +17,9 @@ class BibliotecaApiController{
         $forma = false;
         if(isset($req->query->orderBy)){
             $orderBy = $req->query->orderBy;
-            if(isset($req->query->forma)){
-                $forma = strtoupper($req->query->forma);
-            }
+        }
+        if(isset($req->query->forma)){
+            $forma = strtoupper($req->query->forma);
         }
 
         $items = false;
