@@ -92,4 +92,25 @@ class BibliotecaApiController{
         $libro = $this->model->getLibro($id);
         $this->view->response($libro, 200);
     }
+    public function get($req, $res) {
+        $id = $req -> params -> id;
+        $libro = $this->model->getLibro($id);
+        if($libro == 'error base'){
+            return $this->view->response(["error" => "No existe la base de datos"],500);
+        }
+        if($libro == 'otro error'){
+            return $this->view->response(["error" => "Error del servidor"],500);
+        }
+        if($libro == 'error sintaxis'){
+            return $this->view->response(["error" => "Mala request"],400);
+        }
+        if($libro == 'error tabla'){
+            return $this->view->response(["error" => "No existe la tabla"],404);
+        }
+        if($libro == null){
+            return $this->view->response(["error" => "El libro no existe en la base de datos"],404);
+        }
+ 
+        return $this->view->response($libro);
+    }
 }

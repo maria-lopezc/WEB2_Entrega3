@@ -99,10 +99,25 @@ class BibliotecaModel{
     }
 
     public function getLibro($id){
-        $query = $this->db->prepare('SELECT * FROM libros WHERE id_libro=?');
-        $query->execute([$id]);
-        $libro = $query->fetch(PDO::FETCH_OBJ);
-        return $libro;
+        if ($this->dbError) {
+            return $this->dbError; 
+        }
+        try {
+            $query = $this->db->prepare('SELECT * FROM libros WHERE id_libro=?');
+            $query->execute([$id]);
+            $libro = $query->fetch(PDO::FETCH_OBJ);
+            return $libro;
+        } catch(PDOexception $e) {
+            $codigo=$e->getCode();
+            switch ($codigo) {
+                case '42S02':
+                    return 'error tabla';
+                case '42000':
+                    return 'error sintaxis';
+                default:
+                    return 'otro error';
+            }
+        }
     }
 
     public function getAutor($id){
@@ -130,3 +145,4 @@ class BibliotecaModel{
         }
     }
 }
+
