@@ -17,17 +17,36 @@ Tercer entrega del TPE de WEB 2
                 - int: Cantidad de items por página
             - Página actual: pagina=int
                 - Para poder paginar debe indicar cantidad de items.
+2.  (nombre del proyecto)/api/libros/:id
+    -   Ejemplo:  http://localhost/WEB2_Entrega3/api/libros/1
+    -   Obtiene un libro por id
 ### PUT
 1. (nombre del proyecto)/api/libros/:id 
     - Ejemplo:
+        - Header: http://localhost/WEB2_Entrega3/api/libros/1
         - Body: 
             {
             "id_autor": 2,
             "titulo": "Titulo nuevo",
             "genero": "Genero nuevo",
             "paginas": 10000
-        } 
+            } 
     - Escriba en el body del request todos los campos con los valores a editar. 
     - De faltar un campo tendrá un error.
     - De no existir el libro que se quiere editar o el autor al que se quiere asignar el libro tendrá un error.
-    - JSON ejemplo pner ejemplo
+### POST
+1. (nombre del proyecto)/api/libros/
+    - Ejemplo: 
+        - Header: http://localhost/WEB2_Entrega3/api/libros
+        - Body:
+            {
+            "id_autor": 2,
+            "titulo": "Titulo nuevo",
+            "genero": "Genero nuevo",
+            "paginas": 10000
+            } 
+    - Escriba en el body del request todos los campos con los valores. 
+    - De faltar un campo tendrá un error.
+    - De no existir el libro que se quiere editar o el autor al que se quiere asignar el libro tendrá un error.
+
+
