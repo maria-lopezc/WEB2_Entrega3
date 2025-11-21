@@ -129,6 +129,9 @@ class BibliotecaModel{
         
 
     public function updateLibro($id, $id_autor, $titulo, $genero, $paginas){
+        if ($this->dbError) {
+            return $this->dbError; 
+        }
         try {
             $query = $this->db->prepare('UPDATE `libros` SET `id_autor` = ?, `titulo` = ?, `genero` = ?, `paginas` = ? WHERE `libros`.`id_libro` = ?');
             $query->execute([$id_autor,$titulo,$genero,$paginas,$id]);

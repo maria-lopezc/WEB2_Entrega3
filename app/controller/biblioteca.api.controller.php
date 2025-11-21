@@ -12,7 +12,6 @@ class BibliotecaApiController{
     }
 
     public function getAll($req, $res) {
-        $librosPaginados=array();
         $orderBy = false;
         $forma = false;
         $items = false;
@@ -92,6 +91,7 @@ class BibliotecaApiController{
         $libro = $this->model->getLibro($id);
         $this->view->response($libro, 200);
     }
+    
     public function get($req, $res) {
         $id = $req -> params -> id;
         $libro = $this->model->getLibro($id);
