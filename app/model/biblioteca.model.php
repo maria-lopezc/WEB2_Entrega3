@@ -147,5 +147,29 @@ class BibliotecaModel{
             }
         }
     }
-}
+
+    public function addLibro($id_autor, $titulo, $genero, $paginas){
+        if ($this->dbError) {
+            return $this->dbError; 
+        }
+        try {
+            $query = $this->db->prepare('INSERT INTO libros (id_autor, titulo, genero, paginas) VALUES(?, ?, ?, ?)');
+            $query->execute([$id_autor,$titulo,$genero,$paginas]);
+
+            $id = $this->db->lastInsertId();
+            $sentencia = $this->db->prepare('SELECT * FROM libros WHERE id_libro = ?');
+            $sentencia->execute([$id]);
+            $libro = $sentencia->fetch(PDO::FETCH_OBJ);
+
+            return $libro;
+        } catch (PDOException $e) {
+            $codigo=$e->getCode();
+            switch ($codigo) {
+                case '23000':
+                    return 'error key';
+                default:
+                    return 'otro error';
+            }
+        }
+    }}
 

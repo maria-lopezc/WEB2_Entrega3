@@ -9,8 +9,11 @@ $router->addRoute('api/libros','GET','BibliotecaApiController','getAll');
 //PUT
 $router->addRoute('api/libros/:id','PUT','BibliotecaApiController','edit');
 
-//PUT
+//GET
 $router->addRoute('api/libros/:id','GET','BibliotecaApiController','get');
+
+//POST
+$router -> addRoute('api/libros/', 'POST', 'BibliotecaApiController', 'add');
 
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);
 

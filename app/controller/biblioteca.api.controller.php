@@ -113,4 +113,37 @@ class BibliotecaApiController{
  
         return $this->view->response($libro);
     }
+
+        public function add($req, $res){
+        if (empty($req->body->id_autor)){
+            return $this->view->response(["error" => "Faltan completar id_autor"], 400);
+        }
+        $id_autor = $req->body->id_autor; 
+        $autor= $this->model->getAutor($id_autor);
+        if (!$autor) {
+            return $this->view->response(["error" => "El autor con el id=$id_autor no existe"], 404);
+        }
+        if (empty($req->body->titulo)){
+            return $this->view->response(["error" => "Faltan completar titulo"], 400);
+        }
+        if (empty($req->body->genero)){
+            return $this->view->response(["error" => "Faltan completar genero"], 400);
+        }
+        if (empty($req->body->paginas)){
+            return $this->view->response(["error" => "Faltan completar paginas"], 400);
+        }
+       
+        $titulo = $req->body->titulo;       
+        $genero = $req->body->genero;
+        $paginas = $req->body->paginas;
+
+        $libro=$this->model->addLibro($id_autor, $titulo, $genero, $paginas);
+
+        if($libro == 'error key'){
+            return $this->view->response(["error" => "No existe el autor"], 400);
+        } else if($libro == 'otro error'){
+            return $this->view->response(["error" => "Error del servidor"],500);
+        }
+        $this->view->response($libro, 200);
+    }
 }
