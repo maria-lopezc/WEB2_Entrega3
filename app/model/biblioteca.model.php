@@ -36,7 +36,7 @@ class BibliotecaModel{
         }
     }
 
-    public function getLibros($orderBy=false,$forma=false) {
+    public function getLibros($orderBy=false,$forma=false,$items=false,$pagina=1) {
         if ($this->dbError) {
             return $this->dbError; 
         }
@@ -73,6 +73,13 @@ class BibliotecaModel{
                         break;
                 }
             }
+            if($items){
+                $sql .= ' LIMIT '.$items;
+                if($pagina){
+                    $sql .= ' OFFSET '.$pagina;
+                }
+            }
+
            
             $query = $this->db->prepare($sql);
             $query->execute();

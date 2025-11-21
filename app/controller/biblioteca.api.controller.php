@@ -15,6 +15,8 @@ class BibliotecaApiController{
         $librosPaginados=array();
         $orderBy = false;
         $forma = false;
+        $items = false;
+        $pagina = false;
         if(isset($req->query->orderBy)){
             $orderBy = $req->query->orderBy;
         }
@@ -22,16 +24,14 @@ class BibliotecaApiController{
             $forma = strtoupper($req->query->forma);
         }
 
-        $items = false;
-        $pagina = 1;
         if(isset($req->query->items)){
             $items = $req->query->items;
             if(isset($req->query->pagina)){
-                $pagina = strtoupper($req->query->pagina);
+                $pagina = ($req->query->pagina*$items)-$items;
             }
         }
             
-        $libros = $this->model->getLibros($orderBy,$forma);
+        $libros = $this->model->getLibros($orderBy,$forma,$items,$pagina);
         if($libros == 'error base'){
             return $this->view->response(["error" => "No existe la base de datos"],500);
         }
@@ -47,28 +47,7 @@ class BibliotecaApiController{
         if($libros == null || count($libros) == 0){
             return $this->view->response(["mensaje" => "No hay datos para mostrar"],200);
         }
-
-        if($items){ //offset buscar
-            $i=1;
-            $cantPaginas=ceil(sizeof($libros)/$items);
-            if($pagina<=$cantPaginas){
-                $limInf=(($pagina-1)*$items);
-                $limSup=$pagina*$items;
-                if($pagina<=$cantPaginas){
-                    foreach($libros as $libro){
-                        if($i<=$limSup&&$i>$limInf){
-                            array_push($librosPaginados,$libro);
-                        }
-                        $i+=1;
-                    }
-                }
-                return $this->view->response($librosPaginados);
-            } else {
-                return $this->view->response(["error" => "No existe la página"],404);
-            }
-            
-        }
-         
+ 
         return $this->view->response($libros);
     }
 
